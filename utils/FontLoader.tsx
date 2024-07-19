@@ -25,14 +25,6 @@ const FontLoader = ({ children }: FontLoaderProps) => {
     "TajwalExtraLight": require("../assets/fonts/Tajawal-ExtraLight.ttf"),
   });
 
-  if (!fontsLoaded) {
-    return (
-      <View className="flex-1 justify-center items-center">
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
   return children;
 };
 
