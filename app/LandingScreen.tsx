@@ -3,24 +3,32 @@ import Carousel from "react-native-reanimated-carousel";
 import React from "react";
 import imageOne from "../assets/images/landingImage1.png";
 import imageTwo from "../assets/images/landingImage2.png";
-import imgLogo from "../assets/images/splashLogo.png";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useSharedValue } from "react-native-reanimated";
+
+import LogoHeader from "@/components/LogoHeader";
 
 const LandingScreen = () => {
   const width = Dimensions.get("window").width;
 
   return (
     <View className="flex-1 px-5 py-10">
-      <View className="w-3/4 h-[100px] mx-auto">
-        <Image source={imgLogo} className="w-full h-[70px]" />
-      </View>
+      <LogoHeader />
       <View className="flex-1 rounded-lg overflow-hidden shadow-lg">
         <Carousel
           loop
           width={width * 0.9}
           autoPlay={true}
-          data={[imageOne, imageTwo]}
+          data={[
+            {
+              img: imageOne,
+              text: "مع دنترا, كل سؤال هو فرصة لك لتوسيع معرفتك وكسب المال!",
+            },
+            {
+              img: imageTwo,
+              text: "أجب على الأسئلة بطريقة صحيحة واربح أموال حقيقة",
+            },
+          ]}
           scrollAnimationDuration={3000}
           renderItem={({ index, item }) => (
             <View
@@ -28,20 +36,21 @@ const LandingScreen = () => {
                 flex: 1,
                 justifyContent: "center",
               }}
+              className="py-12"
             >
-              <Image source={item} className="w-full h-full" />
+              <Image source={item.img} className="w-full h-full" />
+              <Text
+                className="font-bold text-xl text-center text-theme-quinary w-3/4 mx-auto mt-5"
+                style={{ fontFamily: "TajwalReg" }}
+              >
+                {item.text}
+              </Text>
             </View>
           )}
         />
       </View>
       {/*  */}
       <View className="mt-6">
-        <Text
-          className="font-bold text-xl text-center text-theme-quinary"
-          style={{ fontFamily: "TajwalReg" }}
-        >
-          مع دنترا, كل سؤال هو فرصة لك لتوسيع معرفتك وكسب المال!
-        </Text>
         {/* register btn */}
         <TouchableOpacity className="items-center bg-theme-primary rounded-3xl p-3 my-5">
           <Text
