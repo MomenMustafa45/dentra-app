@@ -22,7 +22,7 @@ const SplashScreen = (): JSX.Element => {
   const opacityAnimation = useSharedValue(0);
 
   const config = {
-    duration: 2000, // 2 seconds duration for the opacity animation
+    duration: 2000,
   };
 
   const style = useAnimatedStyle(() => {
