@@ -35,18 +35,22 @@ const LandingScreen = () => {
               style={{
                 flex: 1,
                 justifyContent: "center",
+                marginHorizontal: 10,
               }}
               className="py-12"
             >
-              <Image source={item.img} className="w-full h-full" />
+              <View className="rounded-xl overflow-hidden">
+                <Image source={item.img} className="w-full h-full" />
+              </View>
               <Text
-                className="font-bold text-xl text-center text-theme-quinary w-3/4 mx-auto mt-5"
+                className="font-bold text-xl text-center text-theme-quinary w-full mx-auto mt-5"
                 style={{ fontFamily: "TajwalReg" }}
               >
                 {item.text}
               </Text>
             </View>
           )}
+          style={{ gap: 20 }}
         />
       </View>
       {/*  */}
