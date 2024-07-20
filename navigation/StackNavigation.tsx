@@ -2,16 +2,17 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "@/app/SplashScreen";
 import LandingScreen from "@/app/LandingScreen";
-import { Text } from "react-native";
 import ScreenHeader from "@/components/ScreenHeader";
 import LoginScreen from "@/app/LoginScreen";
 import RegisterScreen from "@/app/RegisterScreen";
+import SelectLevelScreen from "@/app/SelectLevelScreen";
 
 export type RootStackParamList = {
   Landing: undefined;
   Splash: undefined;
   Login: undefined;
   Register: undefined;
+  SelectLevel: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -19,7 +20,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Register"
+      initialRouteName="SelectLevel"
       screenOptions={{
         header: () => <ScreenHeader />,
       }}
@@ -44,6 +45,7 @@ const StackNavigation = () => {
         component={RegisterScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen name="SelectLevel" component={SelectLevelScreen} />
     </Stack.Navigator>
   );
 };
