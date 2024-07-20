@@ -7,8 +7,18 @@ import imageTwo from "../assets/images/landingImage2.png";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 import LogoHeader from "@/components/LogoHeader";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "@/navigation/StackNavigation";
+
+type LandingScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Register",
+  "Login"
+>;
 
 const LandingScreen = () => {
+  const navigation = useNavigation<LandingScreenNavigationProp>();
   const width = Dimensions.get("window").width;
 
   return (
@@ -56,7 +66,10 @@ const LandingScreen = () => {
       {/*  */}
       <View className="mt-6">
         {/* register btn */}
-        <TouchableOpacity className="items-center bg-theme-primary rounded-3xl p-3 my-5">
+        <TouchableOpacity
+          className="items-center bg-theme-primary rounded-3xl p-3 my-5"
+          onPress={() => navigation.navigate("Register")}
+        >
           <Text
             className="font-bold text-theme-quaternary text-xl"
             style={{ fontFamily: "TajwalReg" }}
@@ -65,7 +78,10 @@ const LandingScreen = () => {
           </Text>
         </TouchableOpacity>
         {/* Sign in Btn */}
-        <TouchableOpacity className="items-center bg-transparent rounded-3xl p-3">
+        <TouchableOpacity
+          className="items-center bg-transparent rounded-3xl p-3"
+          onPress={() => navigation.navigate("Login")}
+        >
           <Text
             className="font-bold text-theme-primary text-xl"
             style={{ fontFamily: "TajwalReg" }}

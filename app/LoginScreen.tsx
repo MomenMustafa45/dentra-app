@@ -8,11 +8,19 @@ import {
 } from "react-native";
 import React from "react";
 import LogoHeader from "@/components/LogoHeader";
-import { TextInput } from "react-native-gesture-handler";
 import FormButton from "@/components/FormButton";
 import FormInput from "@/components/FormInput";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "@/navigation/StackNavigation";
+import { useNavigation } from "@react-navigation/native";
+
+type LoginScreenNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  "Register"
+>;
 
 const LoginScreen = () => {
+  const navigation = useNavigation<LoginScreenNavigationProp>();
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -45,7 +53,7 @@ const LoginScreen = () => {
           </View>
 
           <View className="flex flex-row justify-center">
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Register")}>
               <Text
                 style={{ fontFamily: "TajwalBold" }}
                 className="text-theme-primary mr-2"
