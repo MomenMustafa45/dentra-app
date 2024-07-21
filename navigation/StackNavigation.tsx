@@ -2,10 +2,9 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 import SplashScreen from "@/app/SplashScreen";
 import LandingScreen from "@/app/LandingScreen";
-import ScreenHeader from "@/components/ScreenHeader";
 import LoginScreen from "@/app/LoginScreen";
 import RegisterScreen from "@/app/RegisterScreen";
-import SelectLevelScreen from "@/app/SelectLevelScreen";
+import DrawerNavigation from "./DrawerNavigation";
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -13,6 +12,8 @@ export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
   SelectLevel: undefined;
+  Topics: undefined;
+  Home: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -20,32 +21,16 @@ const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="SelectLevel"
+      initialRouteName="Home"
       screenOptions={{
-        header: () => <ScreenHeader />,
+        headerShown: false,
       }}
     >
-      <Stack.Screen
-        name="Splash"
-        component={SplashScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Landing"
-        component={LandingScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Login"
-        component={LoginScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen
-        name="Register"
-        component={RegisterScreen}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="SelectLevel" component={SelectLevelScreen} />
+      <Stack.Screen name="Splash" component={SplashScreen} />
+      <Stack.Screen name="Landing" component={LandingScreen} />
+      <Stack.Screen name="Login" component={LoginScreen} />
+      <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen name="Home" component={DrawerNavigation} />
     </Stack.Navigator>
   );
 };
