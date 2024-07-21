@@ -7,9 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
-import LogoHeader from "@/components/LogoHeader";
-import FormButton from "@/components/FormButton";
-import FormInput from "@/components/FormInput";
+import LogoHeader from "@/components/LogoHeader/LogoHeader";
+import FormButton from "@/components/FormButton/FormButton";
+import FormInput from "@/components/FormInput/FormInput";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
 import { useNavigation } from "@react-navigation/native";

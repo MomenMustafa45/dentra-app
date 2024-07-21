@@ -6,7 +6,7 @@ import imageTwo from "../assets/images/landingImage2.png";
 
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-import LogoHeader from "@/components/LogoHeader";
+import LogoHeader from "@/components/LogoHeader/LogoHeader";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
@@ -28,7 +28,6 @@ const LandingScreen = () => {
         <Carousel
           loop
           width={width * 0.9}
-          autoPlay={true}
           data={[
             {
               img: imageOne,

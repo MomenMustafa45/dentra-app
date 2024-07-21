@@ -1,7 +1,7 @@
 import { View, Text } from "react-native";
 import React from "react";
-import DropdownList, { Data } from "@/components/DropdownList";
-import FormButton from "@/components/FormButton";
+import DropdownList, { Data } from "@/components/DropdownList/DropdownList";
+import FormButton from "@/components/FormButton/FormButton";
 
 const emojisWithIcons: Data[] = [
   { title: "جامعة الجاهرة", value: "option 1" },
