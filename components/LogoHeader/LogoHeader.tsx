@@ -9,7 +9,7 @@ type LogoHeaderProps = {
 const LogoHeader = ({ classes, imgStyle }: LogoHeaderProps) => {
   return (
     <View className={`w-3/4 h-[100px] mx-auto ${classes}`}>
-      <Image source={imgLogo} className={`w-full h-[70px] ${imgStyle}`} />
+      <Image source={imgLogo} className={`w-full h-[72px] ${imgStyle}`} />
     </View>
   );
 };
