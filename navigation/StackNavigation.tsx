@@ -14,6 +14,8 @@ export type RootStackParamList = {
   SelectLevel: undefined;
   Topics: undefined;
   Home: undefined;
+  WellDone: undefined;
+  Quiz: undefined;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -21,7 +23,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const StackNavigation = () => {
   return (
     <Stack.Navigator
-      initialRouteName="Home"
+      initialRouteName="Splash"
       screenOptions={{
         headerShown: false,
       }}
