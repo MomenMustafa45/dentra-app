@@ -1,6 +1,6 @@
 import { Image, View } from "react-native";
 import React from "react";
-import imgLogo from "../../assets/images/splashLogo.png";
+import imgLogoTwo from "../../assets/images/dentra-512.png";
 type LogoHeaderProps = {
   classes?: string;
   imgStyle?: string;
@@ -8,8 +8,8 @@ type LogoHeaderProps = {
 
 const LogoHeader = ({ classes, imgStyle }: LogoHeaderProps) => {
   return (
-    <View className={`w-3/4 h-[100px] mx-auto ${classes}`}>
-      <Image source={imgLogo} className={`w-full h-[72px] ${imgStyle}`} />
+    <View className={`w-full h-[100px] mx-auto ${classes} px-6`}>
+      <Image source={imgLogoTwo} className={`w-full h-full ${imgStyle}`} />
     </View>
   );
 };

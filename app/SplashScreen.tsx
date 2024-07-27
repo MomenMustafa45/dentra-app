@@ -1,7 +1,7 @@
 import { View, Text, Image } from "react-native";
 import React, { useEffect } from "react";
 import LottieView from "lottie-react-native";
-import img from "../assets/images/splashLogo.png";
+import img from "../assets/images/dentra-512.png";
 import Animated, {
   useSharedValue,
   withTiming,
@@ -48,7 +48,7 @@ const SplashScreen = (): JSX.Element => {
         className="z-10  w-2/4 flex justify-center items-center"
         style={style}
       >
-        <Image source={img} className="w-full h-[55px]" />
+        <Image source={img} className="w-full h-[65px]" />
       </Animated.View>
       <LottieView
         style={{
