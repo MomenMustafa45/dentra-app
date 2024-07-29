@@ -25,6 +25,10 @@ const FontLoader = ({ children }: FontLoaderProps) => {
     "TajwalExtraLight": require("../assets/fonts/Tajawal-ExtraLight.ttf"),
   });
 
+  if (!fontsLoaded) {
+    return <Text>Loading...</Text>;
+  }
+
   return children;
 };
 
