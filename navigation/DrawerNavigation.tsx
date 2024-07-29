@@ -11,7 +11,6 @@ import QuizScreen from "@/app/QuizScreen";
 export type RootDrawerParamList = {
   Profile: undefined;
   Topics: undefined;
-  SelectLevel: undefined;
   WellDone: undefined;
   Chapters: undefined;
   Quiz: undefined;
@@ -22,18 +21,13 @@ const Drawer = createDrawerNavigator<RootDrawerParamList>();
 const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Quiz"
+      initialRouteName="Topics"
       screenOptions={{
         header: () => <ScreenHeader />,
       }}
     >
-      <Drawer.Screen
-        name="SelectLevel"
-        component={SelectLevelScreen}
-        options={{
-          drawerItemStyle: { display: "none" },
-        }}
-      />
+      <Drawer.Screen name="Topics" component={TopicsScreen} />
+
       <Drawer.Screen
         name="Profile"
         options={{
@@ -42,7 +36,6 @@ const DrawerNavigation = () => {
         }}
         component={ProfileScreen}
       />
-      <Drawer.Screen name="Topics" component={TopicsScreen} />
       <Drawer.Screen name="WellDone" component={WelldoneScreen} />
       <Drawer.Screen name="Chapters" component={ChaptersScreen} />
       <Drawer.Screen name="Quiz" component={QuizScreen} />

@@ -5,6 +5,7 @@ import LandingScreen from "@/app/LandingScreen";
 import LoginScreen from "@/app/LoginScreen";
 import RegisterScreen from "@/app/RegisterScreen";
 import DrawerNavigation from "./DrawerNavigation";
+import SelectLevelScreen from "@/app/SelectLevelScreen";
 
 export type RootStackParamList = {
   Landing: undefined;
@@ -32,6 +33,16 @@ const StackNavigation = () => {
       <Stack.Screen name="Landing" component={LandingScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Register" component={RegisterScreen} />
+      <Stack.Screen
+        name="SelectLevel"
+        component={SelectLevelScreen}
+        options={{
+          headerShown: true,
+          headerTitle: "الجامعة والمستوي",
+          headerTitleStyle: { fontFamily: "TajwalBold" },
+          headerTitleAlign: "center",
+        }}
+      />
       <Stack.Screen name="Home" component={DrawerNavigation} />
     </Stack.Navigator>
   );
