@@ -52,7 +52,7 @@ const LandingScreen = () => {
                 <Image source={item.img} className="w-full h-full" />
               </View>
               <Text
-                className="font-bold text-xl text-center text-theme-quinary w-full mx-auto mt-5"
+                className="text-xl text-center text-theme-quinary w-full mx-auto mt-5"
                 style={{ fontFamily: "TajwalReg" }}
               >
                 {item.text}
@@ -70,10 +70,10 @@ const LandingScreen = () => {
           onPress={() => navigation.navigate("Register")}
         >
           <Text
-            className="font-bold text-theme-quaternary text-xl"
+            className="text-theme-quaternary text-xl"
             style={{ fontFamily: "TajwalReg" }}
           >
-            أنشاء حساب جديد
+            إنشاء حساب جديد
           </Text>
         </TouchableOpacity>
         {/* Sign in Btn */}
@@ -82,7 +82,7 @@ const LandingScreen = () => {
           onPress={() => navigation.navigate("Login")}
         >
           <Text
-            className="font-bold text-theme-primary text-xl"
+            className="text-theme-primary text-xl"
             style={{ fontFamily: "TajwalReg" }}
           >
             تسجيل دخول

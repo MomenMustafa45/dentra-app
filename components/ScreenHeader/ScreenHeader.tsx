@@ -19,7 +19,7 @@ const ScreenHeader = () => {
         >
           <Entypo name="menu" size={30} color="white" />
         </TouchableOpacity>
-        <View className="bg-theme-quaternary rounded-full p-1 shadow-xl shadow-slate-950">
+        <View className="bg-theme-quaternary rounded-full p-1 ">
           <MaterialIcons name="attach-money" size={25} color="#2ecd71" />
         </View>
       </View>
@@ -36,7 +36,7 @@ const ScreenHeader = () => {
         >
           دكتور أحمد السيد
         </Text>
-        <View className=" overflow-hidden bg-theme-quaternary rounded-full p-1 shadow-xl shadow-slate-950">
+        <View className=" overflow-hidden bg-theme-quaternary rounded-full p-1 ">
           <Ionicons name="person" size={24} color="#C7C4BF" />
         </View>
       </View>

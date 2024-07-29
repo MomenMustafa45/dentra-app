@@ -19,7 +19,7 @@ const TopicsScreen = () => {
 
   return (
     <View className="flex-1 px-4">
-      <View className="flex-1 ">
+      <View className="flex-1 items-center justify-center">
         <FlatList
           data={topics}
           renderItem={({ item }) => (
@@ -39,6 +39,9 @@ const TopicsScreen = () => {
           contentContainerStyle={{
             paddingVertical: 30,
             rowGap: 20,
+          }}
+          columnWrapperStyle={{
+            justifyContent: "space-between",
           }}
         />
       </View>
