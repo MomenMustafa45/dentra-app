@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import SelectDropdown from "react-native-select-dropdown";
 
 export type Data = {
+  id?: number;
   title: string;
   value: string;
 };
@@ -11,18 +12,21 @@ type DropdownListProps = {
   dropdownTitle: string;
   dropdownPlaceHolder: string;
   data: Data[];
+  onChange: (selectedItem: Data) => void;
 };
 
 const DropdownList = ({
   dropdownTitle,
   data,
   dropdownPlaceHolder,
+  onChange,
 }: DropdownListProps) => {
   return (
     <SelectDropdown
       data={data}
       onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
+        // console.log(selectedItem, index);
+        onChange(selectedItem);
       }}
       renderButton={(selectedItem, isOpened) => {
         return (
