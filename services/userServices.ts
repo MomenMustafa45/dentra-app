@@ -1,5 +1,9 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import db, { auth } from "@/config/firebase";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+} from "firebase/auth";
 import {
   addDoc,
   collection,
@@ -11,30 +15,54 @@ import {
   where,
 } from "firebase/firestore";
 
-export const registerUser = async (value: {
+type ValueType = {
   email: string;
   password: string;
   name: string;
   phoneNumber: string;
   universityId: string;
   levelId: string;
-}) => {
-  const data = await createUserWithEmailAndPassword(
-    auth,
-    value.email,
-    value.password
-  );
+};
 
-  const res = await setDoc(doc(db, "users", data.user.uid), {
-    id: data.user.uid,
-    name: value.name,
-    email: value.email,
-    phoneNumber: value.phoneNumber,
-    universityId: value.universityId,
-    levelId: value.levelId,
-  });
+export const loginUser = async (value: { email: string; password: string }) => {
+  try {
+    const data = await signInWithEmailAndPassword(
+      auth,
+      value.email,
+      value.password
+    );
 
-  console.log(res);
+    console.log(data.user.uid);
+    await AsyncStorage.setItem("userId", data.user.uid);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
+};
+
+export const registerUser = async (value: ValueType) => {
+  try {
+    const data = await createUserWithEmailAndPassword(
+      auth,
+      value.email,
+      value.password
+    );
+
+    const res = await setDoc(doc(db, "users", data.user.uid), {
+      id: data.user.uid,
+      name: value.name,
+      email: value.email,
+      phoneNumber: value.phoneNumber,
+      universityId: value.universityId,
+      levelId: value.levelId,
+    });
+
+    await AsyncStorage.setItem("userId", data.user.uid);
+
+    console.log(data.user.uid);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 export const getUniversities = async () => {
@@ -48,6 +76,7 @@ export const getUniversities = async () => {
         ...subDoc.data(),
         id: subDoc.id,
       }));
+
       return { ...data, id: doc.id, levels };
     })
   );

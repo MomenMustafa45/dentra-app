@@ -10,6 +10,7 @@ import Animated, {
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SplashScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -31,13 +32,23 @@ const SplashScreen = (): JSX.Element => {
     };
   });
 
-  useEffect(() => {
-    opacityAnimation.value = withTiming(1, config);
-    const autoNavigate = setTimeout(() => {
+  const handleUserId = async () => {
+    const userId = await AsyncStorage.getItem("userId");
+    if (!userId) {
       navigation.dispatch(
         CommonActions.reset({ index: 0, routes: [{ name: "Landing" }] })
       );
-      // navigation.navigate("Landing");
+    } else {
+      navigation.dispatch(
+        CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
+      );
+    }
+  };
+
+  useEffect(() => {
+    opacityAnimation.value = withTiming(1, config);
+    const autoNavigate = setTimeout(() => {
+      handleUserId();
     }, 3100);
     return () => clearTimeout(autoNavigate);
   }, []);
