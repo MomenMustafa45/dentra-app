@@ -29,9 +29,6 @@ const ScreenHeader = () => {
           className="text-theme-quaternary text-lg mr-2"
           style={{
             fontFamily: "TajwalBold",
-            textShadowColor: "rgba(0, 0, 0, 0.75)",
-            textShadowOffset: { width: -1, height: 1 },
-            textShadowRadius: 5,
           }}
         >
           دكتور أحمد السيد
