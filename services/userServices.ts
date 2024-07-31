@@ -8,6 +8,7 @@ import {
   addDoc,
   collection,
   doc,
+  getDoc,
   getDocs,
   onSnapshot,
   query,
@@ -31,9 +32,18 @@ export const loginUser = async (value: { email: string; password: string }) => {
       value.email,
       value.password
     );
+    const snap = await getDoc(doc(db, "users", data.user.uid));
 
-    console.log(data.user.uid);
-    await AsyncStorage.setItem("userId", data.user.uid);
+    // @ts-ignore
+    const { universityId, levelId } = snap.data();
+
+    const userInfo = JSON.stringify({
+      id: data.user.uid,
+      university: universityId,
+      level: levelId,
+    });
+
+    await AsyncStorage.setItem("userInfo", userInfo);
   } catch (error) {
     console.log(error);
     return error;
@@ -57,9 +67,13 @@ export const registerUser = async (value: ValueType) => {
       levelId: value.levelId,
     });
 
-    await AsyncStorage.setItem("userId", data.user.uid);
+    const objStorage = JSON.stringify({
+      id: data.user.uid,
+      university: value.universityId,
+      level: value.levelId,
+    });
 
-    console.log(data.user.uid);
+    await AsyncStorage.setItem("userInfo", objStorage);
   } catch (error) {
     console.log(error);
   }
