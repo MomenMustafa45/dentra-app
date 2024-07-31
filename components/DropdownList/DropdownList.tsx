@@ -11,7 +11,7 @@ export type Data = {
 type DropdownListProps = {
   dropdownTitle: string;
   dropdownPlaceHolder: string;
-  data: Data[];
+  data: any;
   onChange: (selectedItem: Data) => void;
 };
 
@@ -24,8 +24,9 @@ const DropdownList = ({
   return (
     <SelectDropdown
       data={data}
-      onSelect={(selectedItem, index) => {
+      onSelect={(selectedItem) => {
         // console.log(selectedItem, index);
+
         onChange(selectedItem);
       }}
       renderButton={(selectedItem, isOpened) => {
@@ -43,7 +44,7 @@ const DropdownList = ({
                   className="text-lg text-theme-quinary "
                   style={{ fontFamily: "TajwalBold" }}
                 >
-                  {(selectedItem && selectedItem.title) ||
+                  {(selectedItem && selectedItem.name) ||
                     `${dropdownPlaceHolder}`}
                 </Text>
               </View>
@@ -69,7 +70,7 @@ const DropdownList = ({
               className="text-lg text-theme-quinary"
               style={{ fontFamily: "TajwalBold" }}
             >
-              {item.title}
+              {item.name}
             </Text>
           </View>
         );
