@@ -7,6 +7,8 @@ import {
   ScrollView,
 } from "react-native";
 import Modal from "react-native-modal";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import db, { auth } from "../config/firebase";
 
 import React, { useState } from "react";
 import FormButton from "@/components/FormButton/FormButton";
@@ -16,7 +18,17 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import { Users } from "@/utils/DummyData";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDocs,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
+} from "firebase/firestore";
+import { registerUser } from "@/services/userServices";
 
 type RegisterScreenProp = StackNavigationProp<RootStackParamList, "Login">;
 
@@ -37,14 +49,20 @@ const RegisterScreen = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
+  const onSubmit = async (data: FormData) => {
+    const q = query(
+      collection(db, "users"),
+      where("email", "==", `${data.email}`)
+    );
 
-    const isEmailExists = Users.find((user) => user.email == data.email);
-
-    if (isEmailExists) {
+    const dataUsers = await getDocs(q);
+    let isUserExists: string[] = [];
+    dataUsers.forEach((res) => isUserExists.push(res.id));
+    // check if email is already used or not
+    if (isUserExists.length > 0) {
       setShowModal(true);
       setErrorText("البريد الالكتروني موجود بالفعل");
+      return;
     }
     navigation.dispatch(
       CommonActions.reset({

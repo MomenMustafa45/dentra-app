@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-native-modal";
 import DropdownList, { Data } from "@/components/DropdownList/DropdownList";
 import FormButton from "@/components/FormButton/FormButton";
@@ -9,8 +9,11 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import { levels, universities, User, Users } from "@/utils/DummyData";
+import { User, Users, universities as uniTest } from "@/utils/DummyData";
 import { StackNavigationProp } from "@react-navigation/stack";
+import db from "@/config/firebase";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { getUniversities, registerUser } from "@/services/userServices";
 
 type RootStackParamList = {
   SelectLevel: { data: FormData };
@@ -21,43 +24,79 @@ type RegisterScreenProp = StackNavigationProp<RootStackParamList>;
 
 const SelectLevelScreen = () => {
   const [showModal, setShowModal] = useState(false);
+  // universities
+  const [universities, setUniversities] = useState<any>([]);
+
+  // levels index
+  const [currentIdx, setCurrentIdx] = useState(0);
+
+  // // uni
+  // const [university, setUnversity] = useState({});
+
+  //
   const route = useRoute<SelectLevelRouteProp>();
   const navigation = useNavigation<RegisterScreenProp>();
 
-  // object of university and level select
-  let university: { university: Data } | null = null;
-  let level: { level: Data } | null = null;
+  // getting the univs
+  useEffect(() => {
+    const getUnis = async () => {
+      try {
+        const universities = await getUniversities();
+        setUniversities([...universities]);
+      } catch (error) {
+        console.error("Error fetching universities: ", error);
+      }
+    };
+
+    getUnis();
+  }, []);
 
   const { data } = route.params;
+  // object of university and level select
+  const [level, setLevel] = useState(null);
+  const [univs, setUnivs] = useState(null);
 
   const onUniversityChangeHandler = (univ: Data) => {
-    university = { university: univ };
+    // @ts-ignore
+    setUnivs({ ...univ });
+
+    const indxOfUni = universities.findIndex(
+      (u: any) => u.id.toString() == univ.id?.toString()
+    );
+    setCurrentIdx(indxOfUni);
   };
 
   const onLevelChangeHandler = (lvl: Data) => {
-    level = { level: lvl };
+    console.log(lvl);
+    // level = lvl;
+    // @ts-ignore
+    setLevel({ ...lvl });
   };
 
-  const startBtnHandler = () => {
-    if (university?.university && level?.level) {
-      // @ts-ignore
-      const user: User = {
-        ...data,
-        ...level,
-        ...university,
-        score: 0,
-        id: Users.length + 1,
-      };
-      Users.push(user);
+  const startBtnHandler = async () => {
+    try {
+      if (univs && level) {
+        // @ts-ignore
+        const { email, name, phoneNumber, password } = data;
 
-      navigation.dispatch(
-        CommonActions.reset({
-          index: 0,
-          routes: [{ name: "Home" }],
-        })
-      );
-    } else {
-      setShowModal(true);
+        await registerUser({
+          email,
+          password,
+          name,
+          phoneNumber,
+          universityId: universities[currentIdx].id,
+          // @ts-ignore
+          levelId: level?.id,
+        });
+
+        navigation.dispatch(
+          CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
+        );
+      } else {
+        setShowModal(true);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -75,7 +114,7 @@ const SelectLevelScreen = () => {
         {/*  */}
         <View className=" my-5">
           <DropdownList
-            data={levels}
+            data={universities[currentIdx]?.levels}
             dropdownTitle="في أي مستوى مقيد؟"
             dropdownPlaceHolder="اختر المستوى"
             onChange={onLevelChangeHandler}
