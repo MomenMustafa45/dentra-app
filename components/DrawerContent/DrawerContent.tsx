@@ -14,7 +14,7 @@ const DrawerContent = () => {
   const navigation = useNavigation<SplashScreenNavigationProp>();
 
   const signOutHandler = async () => {
-    await AsyncStorage.removeItem("userId");
+    await AsyncStorage.removeItem("userInfo");
     navigation.navigate("Landing");
   };
 

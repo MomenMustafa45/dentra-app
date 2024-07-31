@@ -33,8 +33,9 @@ const SplashScreen = (): JSX.Element => {
   });
 
   const handleUserId = async () => {
-    const userId = await AsyncStorage.getItem("userId");
-    if (!userId) {
+    const userInfo = await AsyncStorage.getItem("userInfo");
+
+    if (!userInfo) {
       navigation.dispatch(
         CommonActions.reset({ index: 0, routes: [{ name: "Landing" }] })
       );
