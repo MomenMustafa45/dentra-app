@@ -7,6 +7,7 @@ import SelectLevelScreen from "@/app/SelectLevelScreen";
 import WelldoneScreen from "@/app/WelldoneScreen";
 import ChaptersScreen from "@/app/ChaptersScreen";
 import QuizScreen from "@/app/QuizScreen";
+import DrawerContent from "@/components/DrawerContent/DrawerContent";
 
 export type RootDrawerParamList = {
   Profile: undefined;
@@ -22,6 +23,7 @@ const DrawerNavigation = () => {
   return (
     <Drawer.Navigator
       initialRouteName="Topics"
+      drawerContent={() => <DrawerContent />}
       screenOptions={{
         header: () => <ScreenHeader />,
       }}
