@@ -18,17 +18,8 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
-import { registerUser } from "@/services/userServices";
+import { collection, getDocs, query, where } from "firebase/firestore";
+import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 
 type RegisterScreenProp = StackNavigationProp<RootStackParamList, "Login">;
 
@@ -40,6 +31,8 @@ type FormData = {
 };
 
 const RegisterScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   const [errorText, setErrorText] = useState("");
   const navigation = useNavigation<RegisterScreenProp>();
@@ -50,6 +43,7 @@ const RegisterScreen = () => {
   } = useForm<FormData>();
 
   const onSubmit = async (data: FormData) => {
+    setIsLoading(true);
     const q = query(
       collection(db, "users"),
       where("email", "==", `${data.email}`)
@@ -62,6 +56,7 @@ const RegisterScreen = () => {
     if (isUserExists.length > 0) {
       setShowModal(true);
       setErrorText("البريد الالكتروني موجود بالفعل");
+      setIsLoading(false);
       return;
     }
     navigation.dispatch(
@@ -70,6 +65,7 @@ const RegisterScreen = () => {
         routes: [{ name: "SelectLevel", params: { data } }],
       })
     );
+    setIsLoading(false);
   };
 
   // on submit error
@@ -80,6 +76,7 @@ const RegisterScreen = () => {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
+      {isLoading && <LoadingIcon />}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="flex-1 py-10 px-5">
           <LogoHeader />

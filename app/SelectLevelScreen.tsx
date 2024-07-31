@@ -14,6 +14,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import db from "@/config/firebase";
 import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { getUniversities, registerUser } from "@/services/userServices";
+import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 
 type RootStackParamList = {
   SelectLevel: { data: FormData };
@@ -23,6 +24,8 @@ type SelectLevelRouteProp = RouteProp<RootStackParamList, "SelectLevel">;
 type RegisterScreenProp = StackNavigationProp<RootStackParamList>;
 
 const SelectLevelScreen = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const [showModal, setShowModal] = useState(false);
   // universities
   const [universities, setUniversities] = useState<any>([]);
@@ -41,8 +44,10 @@ const SelectLevelScreen = () => {
   useEffect(() => {
     const getUnis = async () => {
       try {
+        setIsLoading(true);
         const universities = await getUniversities();
         setUniversities([...universities]);
+        setIsLoading(false);
       } catch (error) {
         console.error("Error fetching universities: ", error);
       }
@@ -75,6 +80,7 @@ const SelectLevelScreen = () => {
 
   const startBtnHandler = async () => {
     try {
+      setIsLoading(true);
       if (univs && level) {
         // @ts-ignore
         const { email, name, phoneNumber, password } = data;
@@ -92,8 +98,10 @@ const SelectLevelScreen = () => {
         navigation.dispatch(
           CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
         );
+        setIsLoading(false);
       } else {
         setShowModal(true);
+        setIsLoading(false);
       }
     } catch (error) {
       console.log(error);
@@ -101,8 +109,9 @@ const SelectLevelScreen = () => {
   };
 
   return (
-    <View className="flex-1 px-4">
-      <View className=" flex-1 pt-20">
+    <View className="flex-1">
+      {isLoading && <LoadingIcon />}
+      <View className=" flex-1 pt-20 px-5">
         <View className="my-5">
           <DropdownList
             data={universities}
@@ -121,7 +130,9 @@ const SelectLevelScreen = () => {
           />
         </View>
       </View>
-      <FormButton onPress={startBtnHandler} title="لنبدأ" />
+      <View className="px-5">
+        <FormButton onPress={startBtnHandler} title="لنبدأ" />
+      </View>
       {/* error and message modal */}
       <Modal
         isVisible={showModal}

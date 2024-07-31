@@ -18,6 +18,9 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { Users } from "@/utils/DummyData";
+import { loginUser } from "@/services/userServices";
+import LottieView from "lottie-react-native";
+import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -31,7 +34,7 @@ export type Inputs = {
 };
 
 const LoginScreen = () => {
-  const [users, setUsers] = useState(Users);
+  const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorText, setErrorText] = useState("");
   const {
@@ -42,33 +45,30 @@ const LoginScreen = () => {
   const navigation = useNavigation<LoginScreenNavigationProp>();
 
   // on submit
-  const onSubmit = (data: Inputs) => {
-    const isUserExists = users.find((user) => user.email == data.email);
-    if (isUserExists) {
-      const isMatchPassword = isUserExists.password == data.password;
-      if (isMatchPassword) {
-        navigation.dispatch(
-          CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
-        );
-      } else {
-        setShowModal(true);
-        setErrorText("كلمة السر خطأ");
-      }
-    } else {
+  const onSubmit = async (data: Inputs) => {
+    setIsLoading(true);
+    const error = await loginUser(data);
+    if (error) {
+      setErrorText("البريد الإلكتروني او الرقم السري غير صحيح");
       setShowModal(true);
-      setErrorText("البريد الالكتروني ليس موجود");
+      setIsLoading(false);
+    } else {
+      navigation.navigate("Home");
+      setIsLoading(false);
     }
   };
 
   // on submit error
   const onError = (errors: any) => {
-    console.error("Form Errors:", errors);
+    // console.error("Form Errors:", errors);
   };
+
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
+      {isLoading && <LoadingIcon />}
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View className="flex-1 py-10 px-5">
           <LogoHeader />
