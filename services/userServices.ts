@@ -65,6 +65,7 @@ export const registerUser = async (value: ValueType) => {
       phoneNumber: value.phoneNumber,
       universityId: value.universityId,
       levelId: value.levelId,
+      score: "0",
     });
 
     const objStorage = JSON.stringify({
