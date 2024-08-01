@@ -93,7 +93,7 @@ const RegisterScreen = () => {
               rules={{
                 required: { value: true, message: "يجب ادخال الاسم" },
                 pattern: {
-                  value: /^[\u0600-\u06FF]+$/,
+                  value: /^[\u0600-\u06FF\s]+$/,
                   message: "فقط اللغة العربية مسموح بها للكتابة",
                 },
               }}
