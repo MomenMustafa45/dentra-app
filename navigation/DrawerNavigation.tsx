@@ -13,7 +13,7 @@ export type RootDrawerParamList = {
   Profile: undefined;
   Topics: undefined;
   WellDone: undefined;
-  Chapters: undefined;
+  Chapters: { topicId: string };
   Quiz: undefined;
 };
 

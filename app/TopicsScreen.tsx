@@ -11,20 +11,21 @@ type TopicsScreenNavigationProp = StackNavigationProp<
   RootDrawerParamList,
   "Chapters"
 >;
+type TopicType = { id: string; img: string; name: string };
 
 const TopicsScreen = () => {
   const [isLoading, setIsloading] = useState(false);
-  const [topics, setTopics] = useState<any[]>([]);
+  const [topics, setTopics] = useState<TopicType[]>([]);
   const navigation = useNavigation<TopicsScreenNavigationProp>();
 
-  const onTopicPressHandler = () => {
-    navigation.navigate("Chapters");
+  const onTopicPressHandler = (item: TopicType) => {
+    navigation.navigate("Chapters", { topicId: item.id });
   };
 
   const topicsData = async () => {
     try {
       setIsloading(true);
-      const res = await getTopics();
+      const res: any = await getTopics();
 
       if (res) setTopics(res);
       setIsloading(false);
@@ -47,7 +48,9 @@ const TopicsScreen = () => {
             data={topics}
             renderItem={({ item }) => (
               <TouchableOpacity
-                onPress={onTopicPressHandler}
+                onPress={() => {
+                  onTopicPressHandler(item);
+                }}
                 className="mx-2 items-center min-w-[120px] max-w-[150px]"
               >
                 <View className="w-[120px] h-[120px] rounded-full overflow-hidden">
