@@ -9,12 +9,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyDEiPvbKINw80lagjwnIIKcwzZ2R9QxWMk",
-  authDomain: "dentra-4d943.firebaseapp.com",
-  projectId: "dentra-4d943",
-  storageBucket: "dentra-4d943.appspot.com",
-  messagingSenderId: "725746204747",
-  appId: "1:725746204747:web:537de29d8ccd0919d70dce",
+  apiKey: "AIzaSyATcRDgAoCYPZulL4rBGQGABGfYwrSEkro",
+  authDomain: "dentra-58baa.firebaseapp.com",
+  projectId: "dentra-58baa",
+  storageBucket: "dentra-58baa.appspot.com",
+  messagingSenderId: "17943264593",
+  appId: "1:17943264593:web:6b42a84bdb7947998c6770",
+  measurementId: "G-1V7D3D104K",
 };
 
 // Initialize Firebase
