@@ -5,7 +5,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  Button,
 } from "react-native";
 import Modal from "react-native-modal";
 
@@ -16,11 +15,11 @@ import FormButton from "@/components/FormButton/FormButton";
 import FormInput from "@/components/FormInput/FormInput";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "@/navigation/StackNavigation";
-import { CommonActions, useNavigation } from "@react-navigation/native";
-import { Users } from "@/utils/DummyData";
 import { loginUser } from "@/services/userServices";
-import LottieView from "lottie-react-native";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
+import { useAppDispatch } from "@/hooks/reduxHooks";
+import { setUserInfo } from "@/store/userInfoSlice/userInfoSlice";
+import { useNavigation } from "@react-navigation/native";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
@@ -34,6 +33,7 @@ export type Inputs = {
 };
 
 const LoginScreen = () => {
+  const dispatch = useAppDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [errorText, setErrorText] = useState("");
@@ -47,7 +47,7 @@ const LoginScreen = () => {
   // on submit
   const onSubmit = async (data: Inputs) => {
     setIsLoading(true);
-    const error = await loginUser(data);
+    const error = await loginUser(data, dispatch);
     if (error) {
       setErrorText("البريد الإلكتروني او الرقم السري غير صحيح");
       setShowModal(true);

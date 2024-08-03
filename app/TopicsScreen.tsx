@@ -6,6 +6,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { getTopics } from "@/services/topicService";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 type TopicsScreenNavigationProp = StackNavigationProp<
   RootDrawerParamList,
@@ -14,9 +15,12 @@ type TopicsScreenNavigationProp = StackNavigationProp<
 type TopicType = { id: string; img: string; name: string };
 
 const TopicsScreen = () => {
+  const userInfo = useAppSelector((state) => state.userInfo.unserInfo);
   const [isLoading, setIsloading] = useState(false);
   const [topics, setTopics] = useState<TopicType[]>([]);
   const navigation = useNavigation<TopicsScreenNavigationProp>();
+
+  console.log(userInfo);
 
   const onTopicPressHandler = (item: TopicType) => {
     navigation.navigate("Chapters", { topicId: item.id });
@@ -25,7 +29,7 @@ const TopicsScreen = () => {
   const topicsData = async () => {
     try {
       setIsloading(true);
-      const res: any = await getTopics();
+      const res: any = await getTopics(userInfo);
 
       if (res) setTopics(res);
       setIsloading(false);

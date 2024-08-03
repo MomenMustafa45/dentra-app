@@ -1,20 +1,17 @@
 import db from "@/config/firebase";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { collection, getDocs } from "firebase/firestore";
 
-export const getTopics = async () => {
+export const getTopics = async (userInfo: any) => {
   try {
-    const userInfo = await AsyncStorage.getItem("userInfo");
-
     // @ts-ignore
-    const { university, level } = JSON.parse(userInfo);
+    const { universityId, levelId } = userInfo;
 
     const topicsCollectionRef = collection(
       db,
       "universities",
-      university,
+      universityId,
       "levels",
-      level,
+      levelId,
       "topics"
     );
     const topicsSnapshot = await getDocs(topicsCollectionRef);

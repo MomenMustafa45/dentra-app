@@ -4,17 +4,8 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import {
-  addDoc,
-  collection,
-  doc,
-  getDoc,
-  getDocs,
-  onSnapshot,
-  query,
-  setDoc,
-  where,
-} from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import { setUserInfo } from "@/store/userInfoSlice/userInfoSlice";
 
 type ValueType = {
   email: string;
@@ -25,7 +16,10 @@ type ValueType = {
   levelId: string;
 };
 
-export const loginUser = async (value: { email: string; password: string }) => {
+export const loginUser = async (
+  value: { email: string; password: string },
+  dispatch: any
+) => {
   try {
     const data = await signInWithEmailAndPassword(
       auth,
@@ -35,22 +29,29 @@ export const loginUser = async (value: { email: string; password: string }) => {
     const snap = await getDoc(doc(db, "users", data.user.uid));
 
     // @ts-ignore
-    const { universityId, levelId } = snap.data();
+    const dataUser: any = snap.data();
 
-    const userInfo = JSON.stringify({
-      id: data.user.uid,
-      university: universityId,
-      level: levelId,
-    });
+    // const userInfo = JSON.stringify({
+    //   id: data.user.uid,
+    //   university: dataUser.universityId,
+    //   level: dataUser.levelId,
+    // });
 
-    await AsyncStorage.setItem("userInfo", userInfo);
+    dispatch(
+      setUserInfo({
+        id: data.user.uid,
+        ...dataUser,
+      })
+    );
+
+    // await AsyncStorage.setItem("userInfo", userInfo);
   } catch (error) {
     console.log(error);
     return error;
   }
 };
 
-export const registerUser = async (value: ValueType) => {
+export const registerUser = async (value: ValueType, dispatch: any) => {
   try {
     const data = await createUserWithEmailAndPassword(
       auth,
@@ -66,15 +67,26 @@ export const registerUser = async (value: ValueType) => {
       universityId: value.universityId,
       levelId: value.levelId,
       score: "0",
+      completedChapters: [],
     });
 
-    const objStorage = JSON.stringify({
-      id: data.user.uid,
-      university: value.universityId,
-      level: value.levelId,
-    });
+    // const objStorage = JSON.stringify({
+    //   id: data.user.uid,
+    //   university: value.universityId,
+    //   level: value.levelId,
+    // });
 
-    await AsyncStorage.setItem("userInfo", objStorage);
+    dispatch(
+      setUserInfo({
+        id: data.user.uid,
+        universityId: value.universityId,
+        levelId: value.levelId,
+        score: "0",
+        completedChapters: [],
+      })
+    );
+
+    // await AsyncStorage.setItem("userInfo", objStorage);
   } catch (error) {
     console.log(error);
   }

@@ -9,12 +9,10 @@ import {
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
-import { User, Users, universities as uniTest } from "@/utils/DummyData";
 import { StackNavigationProp } from "@react-navigation/stack";
-import db from "@/config/firebase";
-import { collection, getDocs, onSnapshot } from "firebase/firestore";
 import { getUniversities, registerUser } from "@/services/userServices";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
+import { useAppDispatch } from "@/hooks/reduxHooks";
 
 type RootStackParamList = {
   SelectLevel: { data: FormData };
@@ -24,6 +22,8 @@ type SelectLevelRouteProp = RouteProp<RootStackParamList, "SelectLevel">;
 type RegisterScreenProp = StackNavigationProp<RootStackParamList>;
 
 const SelectLevelScreen = () => {
+  const dispatch = useAppDispatch();
+
   const [isLoading, setIsLoading] = useState(false);
 
   const [showModal, setShowModal] = useState(false);
@@ -85,15 +85,18 @@ const SelectLevelScreen = () => {
         // @ts-ignore
         const { email, name, phoneNumber, password } = data;
 
-        await registerUser({
-          email,
-          password,
-          name,
-          phoneNumber,
-          universityId: universities[currentIdx].id,
-          // @ts-ignore
-          levelId: level?.id,
-        });
+        await registerUser(
+          {
+            email,
+            password,
+            name,
+            phoneNumber,
+            universityId: universities[currentIdx].id,
+            // @ts-ignore
+            levelId: level?.id,
+          },
+          dispatch
+        );
 
         navigation.dispatch(
           CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })

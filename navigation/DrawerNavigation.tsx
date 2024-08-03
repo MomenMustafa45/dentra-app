@@ -14,7 +14,7 @@ export type RootDrawerParamList = {
   Topics: undefined;
   WellDone: undefined;
   Chapters: { topicId: string };
-  Quiz: undefined;
+  Quiz: { topicId: string; chapterId: string; chapterReward: string };
 };
 
 const Drawer = createDrawerNavigator<RootDrawerParamList>();
