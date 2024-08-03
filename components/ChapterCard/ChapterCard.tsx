@@ -2,15 +2,17 @@ import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import { NavigationProp, useNavigation } from "@react-navigation/native";
 import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
+import { ChapterType } from "@/app/ChaptersScreen";
 
 type ChapterCardProp = {
-  item: { name: string; questionsNum: number; finished: boolean };
+  item: ChapterType;
   index: number;
+  onStartBtn: () => void;
 };
 
 type ChapterCardNavigationProp = NavigationProp<RootDrawerParamList>;
 
-const ChapterCard = ({ item, index }: ChapterCardProp) => {
+const ChapterCard = ({ item, index, onStartBtn }: ChapterCardProp) => {
   const navigation = useNavigation<ChapterCardNavigationProp>();
 
   const startQuiz = () => {
@@ -23,17 +25,17 @@ const ChapterCard = ({ item, index }: ChapterCardProp) => {
         className="text-theme-quinary text-lg"
         style={{ fontFamily: "TajwalBold" }}
       >
-        Chapter {index + 1}: {item.name}
+        {item.title}
       </Text>
       <View className="flex-row justify-between items-center">
         <Text
           className="text-xs text-theme-quinary"
           style={{ fontFamily: "TajwalBold" }}
         >
-          Number of questions: {item.questionsNum}
+          Number of questions: {item.numOfQuizs}
         </Text>
         <TouchableOpacity
-          onPress={startQuiz}
+          onPress={onStartBtn}
           className="bg-theme-primary py-1 px-8 rounded-full"
         >
           <Text
