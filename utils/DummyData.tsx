@@ -51,6 +51,11 @@ export const Users: User[] = [
   },
 ];
 
+// question
+// questionId
+// options
+// correctAnswer - index of options
+
 export const data: DataType[] = [
   {
     question: "What should you do when approaching a yellow traffic light?",
@@ -112,20 +117,4 @@ export const data: DataType[] = [
     ],
     correct_option: "C",
   },
-];
-
-// Universities
-
-export const universities: Data[] = [
-  { id: 1, title: "جامعة بني سويف الحكومية / الأهلية", value: "option 1" },
-];
-
-// Levels
-
-export const levels = [
-  { id: 1, value: "1", title: "المستوي الاول" },
-  { id: 2, value: "2", title: "المستوي الثاني" },
-  { id: 3, value: "3", title: "المستوي الثالث" },
-  { id: 4, value: "4", title: "المستوي الرابع" },
-  { id: 5, value: "5", title: "المستوي الخامس" },
 ];
