@@ -14,15 +14,14 @@ import LogoHeader from "@/components/LogoHeader/LogoHeader";
 import FormButton from "@/components/FormButton/FormButton";
 import FormInput from "@/components/FormInput/FormInput";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "@/navigation/StackNavigation";
 import { loginUser } from "@/services/userServices";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { useAppDispatch } from "@/hooks/reduxHooks";
-import { setUserInfo } from "@/store/userInfoSlice/userInfoSlice";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 
 type LoginScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  RootNavigationParamList,
   "Register",
   "Topics"
 >;
@@ -53,7 +52,9 @@ const LoginScreen = () => {
       setShowModal(true);
       setIsLoading(false);
     } else {
-      navigation.navigate("Home");
+      navigation.dispatch(
+        CommonActions.reset({ index: 0, routes: [{ name: "Home" }] })
+      );
       setIsLoading(false);
     }
   };
@@ -131,14 +132,14 @@ const LoginScreen = () => {
               name="password"
             />
 
-            <TouchableOpacity className="my-3 items-start ml-2">
+            {/* <TouchableOpacity className="my-3 items-start ml-2">
               <Text
                 style={{ fontFamily: "TajwalBold" }}
                 className="text-theme-quinary"
               >
                 نسيت كلمة السر ؟
               </Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
 
             <FormButton
               onPress={handleSubmit(onSubmit, onError)}
