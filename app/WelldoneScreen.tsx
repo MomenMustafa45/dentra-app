@@ -1,8 +1,11 @@
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
 import Foundation from "@expo/vector-icons/Foundation";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 
 export default function WelldoneScreen() {
+  const navigate = useNavigation();
+
   return (
     <View className="flex-1 items-center justify-center">
       <Text
@@ -17,9 +20,16 @@ export default function WelldoneScreen() {
       >
         لقد اجتزت الإختبار وحصلت علي 50 نقطة
       </Text>
-      <View className="items-center justify-center bg-theme-primary w-12 h-12 rounded-full mt-6">
+      <TouchableOpacity
+        className="items-center justify-center bg-theme-primary w-12 h-12 rounded-full mt-6"
+        onPress={() => {
+          navigate.dispatch(
+            CommonActions.reset({ index: 0, routes: [{ name: "Topics" }] })
+          );
+        }}
+      >
         <Foundation name="play" size={30} color="white" />
-      </View>
+      </TouchableOpacity>
     </View>
   );
 }
