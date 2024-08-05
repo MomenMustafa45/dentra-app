@@ -1,14 +1,13 @@
-import { View, Text, ScrollView, Pressable } from "react-native";
-import React, { useEffect, useState } from "react";
+import { View, Text, ScrollView, Pressable, BackHandler } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   CommonActions,
   RouteProp,
+  useFocusEffect,
   useNavigation,
   useRoute,
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "@/navigation/StackNavigation";
-import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
 import { getQuizs } from "@/services/questionsService";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
@@ -16,9 +15,10 @@ import { arrayRemove, arrayUnion, doc, updateDoc } from "firebase/firestore";
 import db from "@/config/firebase";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import { setUserInfo } from "@/store/userInfoSlice/userInfoSlice";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 
-type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList>;
-type ChaptersScreenRouteProp = RouteProp<RootDrawerParamList, "Quiz">;
+type SplashScreenNavigationProp = StackNavigationProp<RootNavigationParamList>;
+type ChaptersScreenRouteProp = RouteProp<RootNavigationParamList, "Quiz">;
 
 type QuestionType = {
   questionId: string;
@@ -39,10 +39,21 @@ const QuizScreen = () => {
   const [noChancesModal, setNoChancesModal] = useState(false);
   const [selectedAnswer, setSelectedAnswer] = useState(false);
   const [isExamVisited, setIsExamVisited] = useState(false);
+  const [showExitModal, setShowExitModal] = useState(false);
+  const [timer, setTimer] = useState(60);
 
   const navigate = useNavigation<SplashScreenNavigationProp>();
   const route = useRoute<ChaptersScreenRouteProp>();
   const { topicId, chapterId, chapterReward } = route.params;
+
+  // reset the exam
+  const resetExam = () => {
+    setCurrentQuizIndex(0);
+    setWrongAnswers(0);
+    setQuizs([]);
+    setIsExamVisited(false);
+    setTimer(60);
+  };
 
   const getQuestions = async () => {
     try {
@@ -64,6 +75,7 @@ const QuizScreen = () => {
     }
   };
 
+  // add chapters to user chapter arr
   const addChapterToUser = async () => {
     const userRef = doc(db, "users", userInfo.id);
     await updateDoc(userRef, {
@@ -71,26 +83,53 @@ const QuizScreen = () => {
     });
   };
 
+  // check if exam visited before
   const checkIsExamVisited = () => {
     if (userInfo.completedChapters.includes(chapterId)) {
       setIsExamVisited(true);
     } else {
       setIsExamVisited(false);
       addChapterToUser();
-      dispatch(
-        setUserInfo({
-          ...userInfo,
-          completedChapters: [...userInfo.completedChapters, chapterId],
-        })
-      );
     }
   };
 
+  // Timer logic
   useEffect(() => {
-    getQuestions();
-    checkIsExamVisited();
-  }, [topicId, chapterId, userInfo]);
+    let countdown: any;
+    if (!showWrongModal && !noChancesModal) {
+      countdown = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
 
+    if (timer === 0) {
+      setWrongAnswers((prev) => prev + 1);
+      if (wrongAnswers > 1) {
+        setNoChancesModal(true);
+      } else {
+        setShowWrongModal(true);
+      }
+      setTimer(60);
+    }
+
+    return () => clearInterval(countdown);
+  }, [timer, showWrongModal, noChancesModal]);
+
+  useEffect(() => {
+    setTimer(60);
+  }, [currentQuizIndex]);
+
+  // Format time to MM:SS
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = time % 60;
+    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  // choose answer logic function
   const chooseAnswerHandler = async (answer: string) => {
     const isCorrectAnswer =
       quizs[currentQuizIndex].correctAnswer ==
@@ -108,26 +147,37 @@ const QuizScreen = () => {
           );
         });
       }
+
       if (currentQuizIndex >= quizs.length - 1) {
         const userRef = doc(db, "users", userInfo.id);
         if (isExamVisited) {
-          setCurrentQuizIndex(0);
-          setWrongAnswers(0);
-          navigate.navigate("WellDone");
+          dispatch(
+            setUserInfo({
+              ...userInfo,
+              completedChapters: [...userInfo.completedChapters, chapterId],
+            })
+          );
+          resetExam();
+          navigate.dispatch(
+            CommonActions.reset({ index: 0, routes: [{ name: "WellDone" }] })
+          );
         } else {
           const score = parseInt(chapterReward) + parseInt(userInfo.score);
           await updateDoc(userRef, {
             score: score.toString(),
           });
+
           dispatch(
             setUserInfo({
               ...userInfo,
               score: score,
+              completedChapters: [...userInfo.completedChapters, chapterId],
             })
           );
-          setCurrentQuizIndex(0);
-          setWrongAnswers(0);
-          navigate.navigate("WellDone");
+          resetExam();
+          navigate.dispatch(
+            CommonActions.reset({ index: 0, routes: [{ name: "WellDone" }] })
+          );
         }
       }
     } else {
@@ -138,7 +188,32 @@ const QuizScreen = () => {
         setShowWrongModal(true);
       }
     }
+    setTimer(60);
   };
+
+  // exit handler
+  useFocusEffect(
+    useCallback(() => {
+      const resetScreen = () => {
+        resetExam();
+        getQuestions();
+        checkIsExamVisited();
+      };
+
+      resetScreen();
+
+      const onBackPress = () => {
+        setShowExitModal(true);
+        return true;
+      };
+
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+      };
+    }, [topicId, chapterId, userInfo])
+  );
 
   return (
     <View className="flex-1">
@@ -202,6 +277,12 @@ const QuizScreen = () => {
               </Pressable>
             ))}
           </ScrollView>
+          <Text
+            className="text-center my-2 text-theme-primary"
+            style={{ fontFamily: "TajwalBold" }}
+          >
+            {formatTime(timer)}
+          </Text>
         </View>
         {/* Options */}
         {/* NoChancesModal */}
@@ -212,8 +293,14 @@ const QuizScreen = () => {
           modalDesc="لسوء الحظ هذه المره الثالثة التي تخطئ فيها، لن تتمكن من الحصول علي نقاط هذا الاختبار ولكن ما زال بامكانك اجتيازه مرة اخري لكي يتم فتح الاختبار التالي"
           modalBtnTitle="فهمت"
           onPressBtn={() => {
-            setCurrentQuizIndex(0);
-            setWrongAnswers(0);
+            dispatch(
+              setUserInfo({
+                ...userInfo,
+                completedChapters: [...userInfo.completedChapters, chapterId],
+              })
+            );
+
+            resetExam();
             navigate.dispatch(
               CommonActions.reset({
                 index: 0,
@@ -230,13 +317,59 @@ const QuizScreen = () => {
           modalTitle="إجابتك خاطئة"
           modalDesc="عليك مشاهدة إعلان عقابا لك وبعدها سنعرض لك الإجابة الصحيحة وننتقل للسؤال التالي"
           modalBtnTitle="موافق"
-          onPressBtn={() => {
+          onPressBtn={async () => {
             setShowWrongModal(false);
             setSelectedAnswer(true);
-            setTimeout(() => {
-              setCurrentQuizIndex((prev) => prev + 1);
-              setSelectedAnswer(false);
-            }, 2000);
+
+            await new Promise((reslove) => {
+              reslove(
+                setTimeout(() => {
+                  setCurrentQuizIndex((prev) => prev + 1);
+                  setSelectedAnswer(false);
+                }, 2000)
+              );
+            });
+
+            if (currentQuizIndex >= quizs.length - 1) {
+              const userRef = doc(db, "users", userInfo.id);
+              if (isExamVisited) {
+                resetExam();
+                navigate.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "WellDone" }],
+                  })
+                );
+              } else {
+                const score =
+                  parseInt(chapterReward) + parseInt(userInfo.score);
+                await updateDoc(userRef, {
+                  score: score.toString(),
+                });
+                dispatch(
+                  setUserInfo({
+                    ...userInfo,
+                    score: score,
+                  })
+                );
+                resetExam();
+                dispatch(
+                  setUserInfo({
+                    ...userInfo,
+                    completedChapters: [
+                      ...userInfo.completedChapters,
+                      chapterId,
+                    ],
+                  })
+                );
+                navigate.dispatch(
+                  CommonActions.reset({
+                    index: 0,
+                    routes: [{ name: "WellDone" }],
+                  })
+                );
+              }
+            }
           }}
         />
         {/* modal */}
@@ -250,10 +383,31 @@ const QuizScreen = () => {
           showModal={!isQuestionsExist}
           onPressBtn={() => {
             setIsQuestionsExists(true);
-            navigate.navigate("Topics");
+            navigate.dispatch(
+              CommonActions.reset({ index: 0, routes: [{ name: "Topics" }] })
+            );
           }}
         />
         {/* modal */}
+        {/* exit modal */}
+        <ModalMessage
+          modalBtnTitle="نعم"
+          modalBtnTitleTwo="لا"
+          modalDesc="هل انت متاكد من الخروج من الإختبار؟"
+          modalTitle="تحذير!"
+          showModal={showExitModal}
+          onPressBtn={() => {
+            resetExam();
+            setShowExitModal(false);
+            navigate.dispatch(
+              CommonActions.reset({ index: 0, routes: [{ name: "Topics" }] })
+            );
+          }}
+          onPressBtnTwo={() => {
+            setShowExitModal(false);
+          }}
+        />
+        {/* exit modal */}
       </View>
       <View className="h-14 relative z-50">
         <Text>Hello</Text>
