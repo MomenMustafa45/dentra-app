@@ -7,21 +7,20 @@ import {
   ScrollView,
 } from "react-native";
 import Modal from "react-native-modal";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import db, { auth } from "../config/firebase";
+import db from "../config/firebase";
 
 import React, { useState } from "react";
 import FormButton from "@/components/FormButton/FormButton";
 import FormInput from "@/components/FormInput/FormInput";
 import LogoHeader from "@/components/LogoHeader/LogoHeader";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "@/navigation/StackNavigation";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import { useForm, Controller } from "react-hook-form";
 import { collection, getDocs, query, where } from "firebase/firestore";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 
-type RegisterScreenProp = StackNavigationProp<RootStackParamList, "Login">;
+type RegisterScreenProp = StackNavigationProp<RootNavigationParamList, "Login">;
 
 type FormData = {
   name: string;

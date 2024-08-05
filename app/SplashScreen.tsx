@@ -8,12 +8,12 @@ import Animated, {
   useAnimatedStyle,
 } from "react-native-reanimated";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "@/navigation/StackNavigation";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 import { CommonActions, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SplashScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  RootNavigationParamList,
   "Splash"
 >;
 

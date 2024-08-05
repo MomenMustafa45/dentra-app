@@ -72,7 +72,7 @@ const SelectLevelScreen = () => {
   };
 
   const onLevelChangeHandler = (lvl: Data) => {
-    console.log(lvl);
+    // console.log(lvl);
     // level = lvl;
     // @ts-ignore
     setLevel({ ...lvl });
@@ -107,7 +107,7 @@ const SelectLevelScreen = () => {
         setIsLoading(false);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

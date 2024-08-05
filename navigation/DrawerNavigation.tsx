@@ -8,16 +8,9 @@ import WelldoneScreen from "@/app/WelldoneScreen";
 import ChaptersScreen from "@/app/ChaptersScreen";
 import QuizScreen from "@/app/QuizScreen";
 import DrawerContent from "@/components/DrawerContent/DrawerContent";
+import { RootNavigationParamList } from "./StackNavigation";
 
-export type RootDrawerParamList = {
-  Profile: undefined;
-  Topics: undefined;
-  WellDone: undefined;
-  Chapters: { topicId: string };
-  Quiz: { topicId: string; chapterId: string; chapterReward: string };
-};
-
-const Drawer = createDrawerNavigator<RootDrawerParamList>();
+const Drawer = createDrawerNavigator<RootNavigationParamList>();
 
 const DrawerNavigation = () => {
   return (

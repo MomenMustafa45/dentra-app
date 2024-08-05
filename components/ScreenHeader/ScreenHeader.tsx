@@ -4,10 +4,12 @@ import { AntDesign, Entypo, Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
-import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
-type ScreenHeaderDrawerProp = DrawerNavigationProp<RootDrawerParamList>;
+import { useAppSelector } from "@/hooks/reduxHooks";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
+type ScreenHeaderDrawerProp = DrawerNavigationProp<RootNavigationParamList>;
 
 const ScreenHeader = () => {
+  const unserInfo = useAppSelector((state) => state.userInfo.unserInfo);
   const navigation = useNavigation<ScreenHeaderDrawerProp>();
 
   return (
@@ -19,9 +21,14 @@ const ScreenHeader = () => {
         >
           <Entypo name="menu" size={30} color="white" />
         </TouchableOpacity>
-        <View className="bg-theme-quaternary rounded-full p-1 ">
+        <TouchableOpacity
+          className="bg-theme-quaternary rounded-full p-1 "
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
+        >
           <MaterialIcons name="attach-money" size={25} color="#2ecd71" />
-        </View>
+        </TouchableOpacity>
       </View>
       {/*  */}
       <View className="flex flex-row items-center">
@@ -31,11 +38,16 @@ const ScreenHeader = () => {
             fontFamily: "TajwalBold",
           }}
         >
-          دكتور أحمد السيد
+          دكتور {unserInfo.name}
         </Text>
-        <View className=" overflow-hidden bg-theme-quaternary rounded-full p-1 ">
+        <TouchableOpacity
+          className=" overflow-hidden bg-theme-quaternary rounded-full p-1 "
+          onPress={() => {
+            navigation.navigate("Profile");
+          }}
+        >
           <Ionicons name="person" size={24} color="#C7C4BF" />
-        </View>
+        </TouchableOpacity>
       </View>
     </View>
   );

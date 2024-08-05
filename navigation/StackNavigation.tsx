@@ -7,19 +7,21 @@ import RegisterScreen from "@/app/RegisterScreen";
 import DrawerNavigation from "./DrawerNavigation";
 import SelectLevelScreen from "@/app/SelectLevelScreen";
 
-export type RootStackParamList = {
+export type RootNavigationParamList = {
   Landing: undefined;
   Splash: undefined;
   Login: undefined;
   Register: undefined;
   SelectLevel: undefined;
-  Topics: undefined;
   Home: undefined;
+  Profile: undefined;
+  Topics: undefined;
   WellDone: undefined;
-  Quiz: undefined;
+  Chapters: { topicId: string };
+  Quiz: { topicId: string; chapterId: string; chapterReward: string };
 };
 
-const Stack = createStackNavigator<RootStackParamList>();
+const Stack = createStackNavigator<RootNavigationParamList>();
 
 const StackNavigation = () => {
   return (
