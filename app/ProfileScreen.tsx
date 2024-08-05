@@ -8,8 +8,18 @@ import {
   ScrollView,
 } from "react-native";
 import React from "react";
+import { useAppSelector } from "@/hooks/reduxHooks";
 
 const ProfileScreen = () => {
+  const userInfo = useAppSelector((state) => state.userInfo.unserInfo);
+
+  function pointsToPounds(points: string) {
+    const conversionRate = 50 / 1000;
+
+    const pounds = parseInt(points) * conversionRate;
+
+    return pounds;
+  }
   return (
     <View className="flex-1">
       <KeyboardAvoidingView
@@ -36,7 +46,7 @@ const ProfileScreen = () => {
                 style={{ fontFamily: "TajwalReg" }}
                 className="text-center text-6xl font-bold text-theme-primary my-3"
               >
-                1000
+                {userInfo.score}
               </Text>
             </View>
             {/*  */}
@@ -51,7 +61,7 @@ const ProfileScreen = () => {
                 style={{ fontFamily: "TajwalReg" }}
                 className="text-center text-6xl font-bold text-theme-primary mt-3"
               >
-                50
+                {pointsToPounds(userInfo.score)}
               </Text>
               <Text
                 style={{ fontFamily: "TajwalReg" }}
