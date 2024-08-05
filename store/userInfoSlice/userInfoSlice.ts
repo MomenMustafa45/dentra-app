@@ -8,6 +8,7 @@ interface UserInfoState {
     universityId: string;
     completedChapters: string[];
     score: string;
+    name: string;
   };
 }
 
@@ -19,6 +20,7 @@ const initialState: UserInfoState = {
     universityId: "",
     completedChapters: [],
     score: "",
+    name: "",
   },
 };
 

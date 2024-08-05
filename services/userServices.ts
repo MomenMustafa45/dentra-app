@@ -46,7 +46,7 @@ export const loginUser = async (
 
     // await AsyncStorage.setItem("userInfo", userInfo);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return error;
   }
 };
@@ -59,7 +59,7 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
       value.password
     );
 
-    const res = await setDoc(doc(db, "users", data.user.uid), {
+    await setDoc(doc(db, "users", data.user.uid), {
       id: data.user.uid,
       name: value.name,
       email: value.email,
@@ -70,6 +70,9 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
       completedChapters: [],
     });
 
+    const snap = await getDoc(doc(db, "users", data.user.uid));
+    const dataUser: any = snap.data();
+
     // const objStorage = JSON.stringify({
     //   id: data.user.uid,
     //   university: value.universityId,
@@ -79,6 +82,7 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
     dispatch(
       setUserInfo({
         id: data.user.uid,
+        ...dataUser,
         universityId: value.universityId,
         levelId: value.levelId,
         score: "0",
@@ -88,7 +92,7 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
 
     // await AsyncStorage.setItem("userInfo", objStorage);
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
 

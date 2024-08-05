@@ -23,6 +23,6 @@ export const getChapters = async (topicId: string, userInfo: any) => {
 
     return chaptersData;
   } catch (error) {
-    console.log(error, "hello from chapt service");
+    // console.log(error, "hello from chapt service");
   }
 };

@@ -22,6 +22,6 @@ export const getTopics = async (userInfo: any) => {
 
     return topicsData;
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 };
