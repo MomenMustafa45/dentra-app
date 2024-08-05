@@ -8,6 +8,7 @@ import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { useNavigation } from "expo-router";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useAppSelector } from "@/hooks/reduxHooks";
+import ModalMessage from "@/components/ModalMessage/ModalMessage";
 
 type ChaptersScreenRouteProp = RouteProp<RootDrawerParamList, "Chapters">;
 type ChapterScreenNavigationProp = DrawerNavigationProp<RootDrawerParamList>;
@@ -18,11 +19,17 @@ export type ChapterType = {
   numOfQuizs: string;
   reward: string;
   title: string;
+  isCompeleted: boolean;
 };
 
 const ChaptersScreen = () => {
   const [chapters, setChapters] = useState<ChapterType[]>([]);
+  const [confirmStartModal, setConfirmStartModal] = useState(false);
+  const [warnChapterSelect, setWarnChapterSelect] = useState(false);
   const [isLoading, setIsloading] = useState(false);
+  const [chapterItem, setChapterItem] = useState<ChapterType>(
+    {} as ChapterType
+  );
 
   const userInfo = useAppSelector((state) => state.userInfo.unserInfo);
 
@@ -43,6 +50,7 @@ const ChaptersScreen = () => {
             numOfQuizs: chapter.numOfQuizs,
             reward: chapter.reward,
             title: chapter.title,
+            isCompeleted: chapter.isCompleted,
           }))
           .sort((a, b) => a.chapterNumber - b.chapterNumber);
         setChapters(chaptersList);
@@ -51,16 +59,34 @@ const ChaptersScreen = () => {
         setIsloading(false);
       }
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   const onStartBtn = (item: ChapterType) => {
-    navigation.navigate("Quiz", {
-      topicId,
-      chapterId: item.chapId,
-      chapterReward: item.reward,
-    });
+    setChapterItem(item);
+    // console.log(item.chapId);
+    const indexOfChap = chapters.findIndex(
+      (chap) => item.chapId == chap.chapId
+    );
+    if (indexOfChap == 0) {
+      // show modal w l donia tmm
+      setConfirmStartModal(true);
+    } else {
+      if (
+        userInfo.completedChapters.includes(chapters[indexOfChap - 1].chapId)
+      ) {
+        // show modal w l donia tmm
+        setConfirmStartModal(true);
+      } else {
+        // not valid and should choose the prev chapters
+        setWarnChapterSelect(true);
+      }
+    }
+    // console.log(chapters.findIndex((chap) => item.chapId == chap.chapId));
+
+    // console.log(chapters.indexOf(item));
+    // console.log(item.isCompeleted, item.chapId);
   };
 
   useEffect(() => {
@@ -81,6 +107,35 @@ const ChaptersScreen = () => {
                 onStartBtn={() => onStartBtn(item)}
               />
             );
+          }}
+        />
+        {/* confirm start exam modal */}
+        <ModalMessage
+          modalBtnTitle="نعم جاهز"
+          modalTitle="رسالة تاكيد!"
+          modalDesc="يرجي العلم أنه يتم احتساب النقاط في حالة الفوز في المحاولة الأولي فقط، هل أنت مستعد حقا للبدء؟"
+          showModal={confirmStartModal}
+          onPressBtn={() => {
+            setConfirmStartModal(false);
+            navigation.navigate("Quiz", {
+              topicId,
+              chapterId: chapterItem.chapId,
+              chapterReward: chapterItem.reward,
+            });
+          }}
+          modalBtnTitleTwo="ليس الأن"
+          onPressBtnTwo={() => {
+            setConfirmStartModal(false);
+          }}
+        />
+        {/* confirm start exam modal */}
+        <ModalMessage
+          showModal={warnChapterSelect}
+          modalBtnTitle="فهمت"
+          modalDesc="يجب إجتياز الشابتر السابق اولا"
+          modalTitle="تحذير"
+          onPressBtn={() => {
+            setWarnChapterSelect(false);
           }}
         />
       </View>

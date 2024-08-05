@@ -8,6 +8,8 @@ type ModalMessageProp = {
   modalTitle: string;
   modalDesc: string;
   modalBtnTitle: string;
+  onPressBtnTwo?: () => void;
+  modalBtnTitleTwo?: string;
 };
 
 const ModalMessage = ({
@@ -16,6 +18,8 @@ const ModalMessage = ({
   modalTitle,
   modalDesc,
   modalBtnTitle,
+  onPressBtnTwo,
+  modalBtnTitleTwo,
 }: ModalMessageProp) => {
   return (
     <Modal
@@ -38,19 +42,39 @@ const ModalMessage = ({
         >
           {modalDesc}
         </Text>
-        <TouchableOpacity
-          className="bg-theme-primary px-6 py-1 rounded-lg"
-          onPress={() => {
-            onPressBtn();
-          }}
-        >
-          <Text
-            style={{ fontFamily: "TajwalBold" }}
-            className="text-theme-quaternary text-center text-lg"
+        {/* btns */}
+        <View className="flex-row justify-center gap-x-2">
+          {modalBtnTitleTwo && (
+            <TouchableOpacity
+              className="bg-theme-primary px-6 py-1 rounded-lg"
+              onPress={() => {
+                if (onPressBtnTwo) {
+                  onPressBtnTwo();
+                }
+              }}
+            >
+              <Text
+                style={{ fontFamily: "TajwalBold" }}
+                className="text-theme-quaternary text-center text-lg"
+              >
+                {modalBtnTitleTwo}
+              </Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            className="bg-theme-primary px-6 py-1 rounded-lg"
+            onPress={() => {
+              onPressBtn();
+            }}
           >
-            {modalBtnTitle}
-          </Text>
-        </TouchableOpacity>
+            <Text
+              style={{ fontFamily: "TajwalBold" }}
+              className="text-theme-quaternary text-center text-lg"
+            >
+              {modalBtnTitle}
+            </Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </Modal>
   );
