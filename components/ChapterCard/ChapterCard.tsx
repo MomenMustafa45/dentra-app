@@ -1,7 +1,5 @@
 import { View, Text, TouchableOpacity } from "react-native";
 import React from "react";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
-import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
 import { ChapterType } from "@/app/ChaptersScreen";
 
 type ChapterCardProp = {
@@ -10,15 +8,7 @@ type ChapterCardProp = {
   onStartBtn: () => void;
 };
 
-type ChapterCardNavigationProp = NavigationProp<RootDrawerParamList>;
-
-const ChapterCard = ({ item, index, onStartBtn }: ChapterCardProp) => {
-  const navigation = useNavigation<ChapterCardNavigationProp>();
-
-  const startQuiz = () => {
-    navigation.navigate("Quiz");
-  };
-
+const ChapterCard = ({ item, onStartBtn }: ChapterCardProp) => {
   return (
     <View className="my-2 rounded py-3 px-3 shadow-xl bg-theme-quaternary shadow-slate-950 border-theme-quinary border-[1px]">
       <Text
