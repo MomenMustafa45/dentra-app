@@ -1,15 +1,16 @@
-import { View, Text, Image, FlatList } from "react-native";
-import React, { useEffect, useState } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { View, Text, Image, FlatList, BackHandler } from "react-native";
+import React, { useCallback, useEffect, useState } from "react";
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { getTopics } from "@/services/topicService";
 import { useAppSelector } from "@/hooks/reduxHooks";
+import ModalMessage from "@/components/ModalMessage/ModalMessage";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 
 type TopicsScreenNavigationProp = StackNavigationProp<
-  RootDrawerParamList,
+  RootNavigationParamList,
   "Chapters"
 >;
 type TopicType = { id: string; img: string; name: string };
@@ -18,9 +19,9 @@ const TopicsScreen = () => {
   const userInfo = useAppSelector((state) => state.userInfo.unserInfo);
   const [isLoading, setIsloading] = useState(false);
   const [topics, setTopics] = useState<TopicType[]>([]);
-  const navigation = useNavigation<TopicsScreenNavigationProp>();
+  const [exitConfirmModal, setExitConfirmModal] = useState<boolean>(false);
 
-  console.log(userInfo);
+  const navigation = useNavigation<TopicsScreenNavigationProp>();
 
   const onTopicPressHandler = (item: TopicType) => {
     navigation.navigate("Chapters", { topicId: item.id });
@@ -34,13 +35,34 @@ const TopicsScreen = () => {
       if (res) setTopics(res);
       setIsloading(false);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
   useEffect(() => {
     topicsData();
   }, []);
+
+  // exit handler
+
+  const handleExitApp = () => {
+    setExitConfirmModal(false);
+    BackHandler.exitApp();
+  };
+
+  const confirmExitApp = () => {
+    setExitConfirmModal(true);
+    return true;
+  };
+  useFocusEffect(
+    useCallback(() => {
+      BackHandler.addEventListener("hardwareBackPress", confirmExitApp);
+
+      return () => {
+        BackHandler.removeEventListener("hardwareBackPress", confirmExitApp);
+      };
+    }, [])
+  );
 
   return (
     <>
@@ -78,6 +100,18 @@ const TopicsScreen = () => {
             }}
           />
         </View>
+        {/* Modal confirm exit */}
+        <ModalMessage
+          showModal={exitConfirmModal}
+          modalBtnTitle="نعم"
+          modalDesc="هل أنت متأكد انك تريد الخروج من التطبيق؟"
+          modalTitle="تنبيه!"
+          onPressBtn={handleExitApp}
+          modalBtnTitleTwo="لا"
+          onPressBtnTwo={() => {
+            setExitConfirmModal(false);
+          }}
+        />
       </View>
     </>
   );
