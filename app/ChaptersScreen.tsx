@@ -2,16 +2,17 @@ import { View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import ChapterCard from "@/components/ChapterCard/ChapterCard";
 import { RouteProp, useRoute } from "@react-navigation/native";
-import { RootDrawerParamList } from "@/navigation/DrawerNavigation";
 import { getChapters } from "@/services/chaptersService";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { useNavigation } from "expo-router";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 
-type ChaptersScreenRouteProp = RouteProp<RootDrawerParamList, "Chapters">;
-type ChapterScreenNavigationProp = DrawerNavigationProp<RootDrawerParamList>;
+type ChaptersScreenRouteProp = RouteProp<RootNavigationParamList, "Chapters">;
+type ChapterScreenNavigationProp =
+  DrawerNavigationProp<RootNavigationParamList>;
 
 export type ChapterType = {
   chapId: string;
