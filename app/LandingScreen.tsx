@@ -9,10 +9,10 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import LogoHeader from "@/components/LogoHeader/LogoHeader";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { RootStackParamList } from "@/navigation/StackNavigation";
+import { RootNavigationParamList } from "@/navigation/StackNavigation";
 
 type LandingScreenNavigationProp = StackNavigationProp<
-  RootStackParamList,
+  RootNavigationParamList,
   "Register",
   "Login"
 >;
