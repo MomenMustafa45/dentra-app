@@ -40,14 +40,9 @@ const ScreenHeader = () => {
         >
           دكتور {unserInfo.name}
         </Text>
-        <TouchableOpacity
-          className=" overflow-hidden bg-theme-quaternary rounded-full p-1 "
-          onPress={() => {
-            navigation.navigate("Profile");
-          }}
-        >
+        <View className=" overflow-hidden bg-theme-quaternary rounded-full p-1">
           <Ionicons name="person" size={24} color="#C7C4BF" />
-        </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
