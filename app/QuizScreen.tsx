@@ -65,6 +65,11 @@ const QuizScreen = () => {
       );
 
       if (quizData && quizData?.length > 0) {
+        // Fisher-Yates Shuffle
+        for (let i = quizData.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [quizData[i], quizData[j]] = [quizData[j], quizData[i]];
+        }
         setQuizs([...quizData]);
       } else {
         setIsQuestionsExists(false);
@@ -252,12 +257,12 @@ const QuizScreen = () => {
                   selectedAnswer &&
                   quizs[currentQuizIndex].options.indexOf(option).toString() ==
                     quizs[currentQuizIndex].correctAnswer
-                    ? "bg-theme-primary"
+                    ? "bg-[#5beb9a]"
                     : selectedAnswer &&
                       quizs[currentQuizIndex].options
                         .indexOf(option)
                         .toString() != quizs[currentQuizIndex].correctAnswer
-                    ? "bg-red-400"
+                    ? "bg-[#fdbdbd]"
                     : "bg-white"
                 }`}
                 disabled={selectedAnswer}
