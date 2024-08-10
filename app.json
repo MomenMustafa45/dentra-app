@@ -1,17 +1,17 @@
 {
   "expo": {
-    "name": "dentra",
-    "slug": "dentra",
+    "name": "Dentra",
+    "slug": "dentra-app",
+    "scheme": "com.dentra.dentraapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
     "userInterfaceStyle": "automatic",
-
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "package": "com.dentra.dentraapp",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -22,7 +22,20 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router"],
+    "extra": {
+      "eas": {
+        "projectId": "c5af261e-162d-4b64-8cb9-98732119c07a"
+      }
+    },
+    "plugins": [
+      [
+        "react-native-google-mobile-ads",
+        {
+          "androidAppId": "ca-app-pub-8988048891909123~1615946640"
+        }
+      ],
+      "expo-router"
+    ],
     "experiments": {
       "typedRoutes": true
     }
