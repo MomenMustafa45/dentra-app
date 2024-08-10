@@ -28,10 +28,26 @@ const DrawerContent = () => {
     <View className="px-3 py-10 flex justify-between flex-1">
       <View>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Topics")}
-          className={`${activeRoute == 0 ? "bg-theme-tertiary" : ""} p-2 my-2`}
+          onPress={() => navigation.navigate("AboutUs")}
+          className={`${activeRoute == 5 ? "bg-theme-tertiary" : ""} p-2 my-2`}
         >
-          <Text style={{ fontFamily: "TajwalBold" }}>Topics</Text>
+          <Text style={{ fontFamily: "TajwalBold" }}>ما هو دنترا؟</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className={`${activeRoute == 7 ? "bg-theme-tertiary" : ""} p-2 my-2`}
+          onPress={() => {
+            navigation.navigate("Politics");
+          }}
+        >
+          <Text style={{ fontFamily: "TajwalBold" }}>سياسة الخصوصية</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          className={`${activeRoute == 6 ? "bg-theme-tertiary" : ""} p-2 my-2`}
+          onPress={() => {
+            navigation.navigate("CommonQuizs");
+          }}
+        >
+          <Text style={{ fontFamily: "TajwalBold" }}>أسئلة شائعة</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className={`${activeRoute == 1 ? "bg-theme-tertiary" : ""} p-2 my-2`}
@@ -39,12 +55,12 @@ const DrawerContent = () => {
             navigation.navigate("Profile");
           }}
         >
-          <Text style={{ fontFamily: "TajwalBold" }}>Profile</Text>
+          <Text style={{ fontFamily: "TajwalBold" }}>الرصيد</Text>
         </TouchableOpacity>
       </View>
       <View>
         <TouchableOpacity onPress={signOutHandler} className="p-2 my-2">
-          <Text style={{ fontFamily: "TajwalBold" }}>Sign Out</Text>
+          <Text style={{ fontFamily: "TajwalBold" }}>تسجيل الخروج</Text>
         </TouchableOpacity>
       </View>
     </View>

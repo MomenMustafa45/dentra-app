@@ -19,6 +19,9 @@ export type RootNavigationParamList = {
   WellDone: undefined;
   Chapters: { topicId: string };
   Quiz: { topicId: string; chapterId: string; chapterReward: string };
+  AboutUs: undefined;
+  CommonQuizs: undefined;
+  Politics: undefined;
 };
 
 const Stack = createStackNavigator<RootNavigationParamList>();
