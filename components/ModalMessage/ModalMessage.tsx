@@ -29,7 +29,10 @@ const ModalMessage = ({
       animationOutTiming={500}
       backdropOpacity={0.9}
     >
-      <View className="h-52 bg-white items-center justify-between py-4 rounded-lg shadow">
+      <View
+        className="bg-white items-center justify-between py-4 rounded-lg shadow px-4"
+        style={{ minHeight: 200 }}
+      >
         <Text
           style={{ fontFamily: "TajwalBold" }}
           className="text-theme-quinary text-center text-3xl"
@@ -38,7 +41,7 @@ const ModalMessage = ({
         </Text>
         <Text
           style={{ fontFamily: "TajwalReg" }}
-          className="text-theme-quinary text-center text-lg"
+          className="text-theme-quinary text-center text-base my-4"
         >
           {modalDesc}
         </Text>
