@@ -4,7 +4,14 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { setUserInfo } from "@/store/userInfoSlice/userInfoSlice";
 
 type ValueType = {
@@ -113,4 +120,26 @@ export const getUniversities = async () => {
   );
 
   return universities;
+};
+
+export const resetUserScore = async (userId: string, dispatch: any) => {
+  try {
+    const userDocRef = doc(db, "users", userId);
+
+    await updateDoc(userDocRef, {
+      score: "0",
+    });
+
+    const snap = await getDoc(doc(db, "users", userId));
+    const dataUser: any = snap.data();
+    dispatch(
+      setUserInfo({
+        id: userId,
+        ...dataUser,
+      })
+    );
+    console.log("Field updated successfully!", dataUser);
+  } catch (error) {
+    console.error("Error updating field: ", error);
+  }
 };
