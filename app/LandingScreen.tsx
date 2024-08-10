@@ -10,6 +10,7 @@ import LogoHeader from "@/components/LogoHeader/LogoHeader";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootNavigationParamList } from "@/navigation/StackNavigation";
+import AdBanner from "@/components/AdBanner/AdBanner";
 
 type LandingScreenNavigationProp = StackNavigationProp<
   RootNavigationParamList,
@@ -89,6 +90,7 @@ const LandingScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
+      {/* <AdBanner /> */}
     </View>
   );
 };

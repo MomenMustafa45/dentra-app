@@ -8,6 +8,8 @@ import { getTopics } from "@/services/topicService";
 import { useAppSelector } from "@/hooks/reduxHooks";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
 import { RootNavigationParamList } from "@/navigation/StackNavigation";
+import AdBanner from "@/components/AdBanner/AdBanner";
+import AdInterstitial from "@/components/AdInterstitial/AdInterstitial";
 
 type TopicsScreenNavigationProp = StackNavigationProp<
   RootNavigationParamList,
@@ -113,6 +115,10 @@ const TopicsScreen = () => {
           }}
         />
       </View>
+      {/* <View className="bg-[#995353] min-h-[50px]">
+        <AdInterstitial />
+      </View> */}
+      {/* <AdBanner /> */}
     </>
   );
 };
