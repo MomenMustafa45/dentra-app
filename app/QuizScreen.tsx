@@ -414,8 +414,8 @@ const QuizScreen = () => {
         />
         {/* exit modal */}
       </View>
-      <View className="h-14 relative z-50">
-        <Text>Hello</Text>
+      <View className="h-20 justify-center items-center bg-slate-500">
+        <Text>Advertisement</Text>
       </View>
     </View>
   );
