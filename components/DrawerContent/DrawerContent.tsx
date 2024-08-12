@@ -1,14 +1,16 @@
 import { View, Text, TouchableOpacity } from "react-native";
-import React, { useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { CommonActions, useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { RootNavigationParamList } from "@/navigation/StackNavigation";
+import ModalMessage from "../ModalMessage/ModalMessage";
 
 type SplashScreenNavigationProp = DrawerNavigationProp<RootNavigationParamList>;
 
 const DrawerContent = () => {
   const navigation = useNavigation<SplashScreenNavigationProp>();
   const [activeRoute, setActiveRoute] = React.useState<number | undefined>(0);
+  const [confirmExitModal, setConfirmExitModal] = useState(false);
 
   useEffect(() => {
     const unsubscribe = navigation.addListener("state", (e) => {
@@ -21,7 +23,7 @@ const DrawerContent = () => {
   }, [navigation]);
 
   const signOutHandler = () => {
-    navigation.navigate("Landing");
+    setConfirmExitModal(true);
   };
 
   return (
@@ -63,6 +65,24 @@ const DrawerContent = () => {
           <Text style={{ fontFamily: "TajwalBold" }}>تسجيل الخروج</Text>
         </TouchableOpacity>
       </View>
+      {/* confirm exit modal */}
+      <ModalMessage
+        modalBtnTitle="نعم"
+        modalTitle="تنبيه!"
+        modalDesc="هل انت متأكد من الخروج من الحساب؟"
+        showModal={confirmExitModal}
+        onPressBtn={() => {
+          setConfirmExitModal(false);
+          navigation.dispatch(
+            CommonActions.reset({ index: 0, routes: [{ name: "Landing" }] })
+          );
+        }}
+        modalBtnTitleTwo="لأ"
+        onPressBtnTwo={() => {
+          setConfirmExitModal(false);
+        }}
+      />
+      {/* confirm exit modal */}
     </View>
   );
 };
