@@ -121,6 +121,10 @@ const RegisterScreen = () => {
                   value: true,
                   message: "يجب ادخال البريد الالكتروني",
                 },
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "البريد الالكتروني غير صالح",
+                },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
                 <FormInput
