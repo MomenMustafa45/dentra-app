@@ -4,14 +4,14 @@ import { collection, getDocs } from "firebase/firestore";
 export const getTopics = async (userInfo: any) => {
   try {
     // @ts-ignore
-    const { universityId, levelId } = userInfo;
+    const { university, level } = userInfo;
 
     const topicsCollectionRef = collection(
       db,
       "universities",
-      universityId,
+      university,
       "levels",
-      levelId,
+      level,
       "topics"
     );
     const topicsSnapshot = await getDocs(topicsCollectionRef);

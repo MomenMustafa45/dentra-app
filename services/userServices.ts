@@ -23,6 +23,17 @@ type ValueType = {
   levelId: string;
 };
 
+export const getUserById = async (userId: string, dispatch: any) => {
+  const snap = await getDoc(doc(db, "users", userId));
+  const dataUser: any = snap.data();
+  dispatch(
+    setUserInfo({
+      id: userId,
+      ...dataUser,
+    })
+  );
+};
+
 export const loginUser = async (
   value: { email: string; password: string },
   dispatch: any
@@ -38,11 +49,11 @@ export const loginUser = async (
     // @ts-ignore
     const dataUser: any = snap.data();
 
-    // const userInfo = JSON.stringify({
-    //   id: data.user.uid,
-    //   university: dataUser.universityId,
-    //   level: dataUser.levelId,
-    // });
+    const userInfo = JSON.stringify({
+      id: data.user.uid,
+      university: dataUser.universityId,
+      level: dataUser.levelId,
+    });
 
     dispatch(
       setUserInfo({
@@ -51,7 +62,7 @@ export const loginUser = async (
       })
     );
 
-    // await AsyncStorage.setItem("userInfo", userInfo);
+    await AsyncStorage.setItem("userInfo", userInfo);
   } catch (error) {
     // console.log(error);
     return error;
@@ -80,11 +91,11 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
     const snap = await getDoc(doc(db, "users", data.user.uid));
     const dataUser: any = snap.data();
 
-    // const objStorage = JSON.stringify({
-    //   id: data.user.uid,
-    //   university: value.universityId,
-    //   level: value.levelId,
-    // });
+    const objStorage = JSON.stringify({
+      id: data.user.uid,
+      university: value.universityId,
+      level: value.levelId,
+    });
 
     dispatch(
       setUserInfo({
@@ -97,7 +108,7 @@ export const registerUser = async (value: ValueType, dispatch: any) => {
       })
     );
 
-    // await AsyncStorage.setItem("userInfo", objStorage);
+    await AsyncStorage.setItem("userInfo", objStorage);
   } catch (error) {
     // console.log(error);
   }
