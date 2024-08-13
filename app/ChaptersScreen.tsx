@@ -113,8 +113,8 @@ const ChaptersScreen = () => {
         {/* confirm start exam modal */}
         <ModalMessage
           modalBtnTitle="نعم جاهز"
-          modalTitle="رسالة تاكيد!"
-          modalDesc="يرجي العلم أنه يتم احتساب النقاط في حالة الفوز في المحاولة الأولي فقط، هل أنت مستعد حقا للبدء؟"
+          modalTitle="رسالة تأكيد!"
+          modalDesc="يرجى العلم أنه يتم احتساب النقاط في حالة الفوز في المحاولة الأولى فقط، هل أنت مستعد حقا للبدء؟"
           showModal={confirmStartModal}
           onPressBtn={() => {
             setConfirmStartModal(false);
@@ -124,7 +124,7 @@ const ChaptersScreen = () => {
               chapterReward: chapterItem.reward,
             });
           }}
-          modalBtnTitleTwo="ليس الأن"
+          modalBtnTitleTwo="ليس الآن"
           onPressBtnTwo={() => {
             setConfirmStartModal(false);
           }}

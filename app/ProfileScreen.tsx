@@ -84,7 +84,7 @@ const ProfileScreen = () => {
               style={{ fontFamily: "TajwalReg" }}
               className="text-center text-theme-primary text-lg "
             >
-              الحد الادني للسحب هو 50 جنيه
+              الحد الأدنى للسحب هو 50 جنيه
             </Text>
             {/*  */}
             <View className="my-5">
