@@ -4,6 +4,7 @@ import { CommonActions, useNavigation } from "@react-navigation/native";
 import { DrawerNavigationProp } from "@react-navigation/drawer";
 import { RootNavigationParamList } from "@/navigation/StackNavigation";
 import ModalMessage from "../ModalMessage/ModalMessage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type SplashScreenNavigationProp = DrawerNavigationProp<RootNavigationParamList>;
 
@@ -26,9 +27,19 @@ const DrawerContent = () => {
     setConfirmExitModal(true);
   };
 
+  const removeTokenFromStorage = async () => {
+    await AsyncStorage.removeItem("userInfo");
+  };
+
   return (
     <View className="px-3 py-10 flex justify-between flex-1">
       <View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Topics")}
+          className={`${activeRoute == 0 ? "bg-theme-tertiary" : ""} p-2 my-2`}
+        >
+          <Text style={{ fontFamily: "TajwalBold" }}>الرئيسية</Text>
+        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => navigation.navigate("AboutUs")}
           className={`${activeRoute == 5 ? "bg-theme-tertiary" : ""} p-2 my-2`}
@@ -72,6 +83,7 @@ const DrawerContent = () => {
         modalDesc="هل انت متأكد من الخروج من الحساب؟"
         showModal={confirmExitModal}
         onPressBtn={() => {
+          removeTokenFromStorage();
           setConfirmExitModal(false);
           navigation.dispatch(
             CommonActions.reset({ index: 0, routes: [{ name: "Landing" }] })
