@@ -1,15 +1,21 @@
-import { View, Text, Image, FlatList, BackHandler } from "react-native";
+import { View, Text, Image, FlatList, BackHandler, Alert } from "react-native";
 import React, { useCallback, useEffect, useState } from "react";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import {
+  CommonActions,
+  useFocusEffect,
+  useNavigation,
+} from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { StackNavigationProp } from "@react-navigation/stack";
 import LoadingIcon from "@/components/LoadingIcon/LoadingIcon";
 import { getTopics } from "@/services/topicService";
-import { useAppSelector } from "@/hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHooks";
 import ModalMessage from "@/components/ModalMessage/ModalMessage";
 import { RootNavigationParamList } from "@/navigation/StackNavigation";
 import AdBanner from "@/components/AdBanner/AdBanner";
 import AdInterstitial from "@/components/AdInterstitial/AdInterstitial";
+import { getUserById } from "@/services/userServices";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type TopicsScreenNavigationProp = StackNavigationProp<
   RootNavigationParamList,
@@ -18,10 +24,10 @@ type TopicsScreenNavigationProp = StackNavigationProp<
 type TopicType = { id: string; img: string; name: string };
 
 const TopicsScreen = () => {
-  const userInfo = useAppSelector((state) => state.userInfo.unserInfo);
   const [isLoading, setIsloading] = useState(false);
   const [topics, setTopics] = useState<TopicType[]>([]);
   const [exitConfirmModal, setExitConfirmModal] = useState<boolean>(false);
+  const dispatch = useAppDispatch();
 
   const navigation = useNavigation<TopicsScreenNavigationProp>();
 
@@ -32,9 +38,15 @@ const TopicsScreen = () => {
   const topicsData = async () => {
     try {
       setIsloading(true);
-      const res: any = await getTopics(userInfo);
 
-      if (res) setTopics(res);
+      const user = await AsyncStorage.getItem("userInfo");
+      if (user) {
+        getUserById(JSON.parse(user).id, dispatch);
+        console.log(JSON.parse(user));
+
+        const res: any = await getTopics(JSON.parse(user));
+        if (res) setTopics(res);
+      }
       setIsloading(false);
     } catch (error) {
       // console.log(error);
@@ -45,15 +57,26 @@ const TopicsScreen = () => {
     topicsData();
   }, []);
 
-  // exit handler
-
-  const handleExitApp = () => {
-    setExitConfirmModal(false);
-    BackHandler.exitApp();
-  };
-
   const confirmExitApp = () => {
-    setExitConfirmModal(true);
+    Alert.alert("تنبيه!", "هل أنت متأكد انك تريد الخروج من التطبيق؟", [
+      {
+        text: "لا",
+        onPress: () => null,
+        style: "cancel",
+      },
+      {
+        text: "نعم",
+        onPress: () => {
+          BackHandler.exitApp();
+          navigation.dispatch(
+            CommonActions.reset({
+              index: 0,
+              routes: [{ name: "Splash" }],
+            })
+          );
+        },
+      },
+    ]);
     return true;
   };
   useFocusEffect(
@@ -102,18 +125,6 @@ const TopicsScreen = () => {
             }}
           />
         </View>
-        {/* Modal confirm exit */}
-        <ModalMessage
-          showModal={exitConfirmModal}
-          modalBtnTitle="نعم"
-          modalDesc="هل أنت متأكد انك تريد الخروج من التطبيق؟"
-          modalTitle="تنبيه!"
-          onPressBtn={handleExitApp}
-          modalBtnTitleTwo="لا"
-          onPressBtnTwo={() => {
-            setExitConfirmModal(false);
-          }}
-        />
       </View>
       {/* <View className="bg-[#995353] min-h-[50px]">
         <AdInterstitial />
