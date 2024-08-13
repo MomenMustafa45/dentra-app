@@ -84,7 +84,7 @@ const RegisterScreen = () => {
               style={{ fontFamily: "TajwalBold" }}
               className="text-theme-quinary text-xl"
             >
-              انشاء حساب جديد
+              إنشاء حساب جديد
             </Text>
 
             <Controller
@@ -101,7 +101,7 @@ const RegisterScreen = () => {
                   onChange={onChange}
                   onBlur={onBlur}
                   value={value}
-                  placeHolder="أسمك يا دكتور"
+                  placeHolder="اسمك يا دكتور"
                   inputStyle="mt-5"
                 />
               )}
