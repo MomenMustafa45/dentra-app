@@ -11,6 +11,7 @@ import QuizScreen from "@/app/QuizScreen";
 import AboutDentra from "@/app/AboutDentra";
 import CommonQestions from "@/app/CommonQestions";
 import PoliticsScreen from "@/app/PoliticsScreen";
+import { I18nManager } from "react-native";
 
 const Drawer = createDrawerNavigator<RootNavigationParamList>();
 
@@ -21,6 +22,7 @@ const DrawerNavigation = () => {
       drawerContent={() => <DrawerContent />}
       screenOptions={{
         header: () => <ScreenHeader />,
+        drawerPosition: I18nManager.isRTL ? "right" : "left",
       }}
     >
       <Drawer.Screen name="Topics" component={TopicsScreen} />
