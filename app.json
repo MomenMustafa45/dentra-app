@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Dentra",
-    "slug": "dentra-app",
+    "slug": "dentra",
     "scheme": "com.dentra.dentraapp",
     "version": "1.0.2",
     "orientation": "portrait",
@@ -11,11 +11,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.dentra.dentraapp",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon3.png",
-        "backgroundColor": "#ffffff"
-      }
+      "package": "com.dentra.dentraapp"
     },
     "web": {
       "bundler": "metro",
@@ -24,7 +20,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "c5af261e-162d-4b64-8cb9-98732119c07a"
+        "projectId": "1b3a84d4-e918-4ec7-8ee1-da07958795e2"
       }
     },
     "plugins": [
