@@ -5,7 +5,7 @@
     "scheme": "com.dentra.dentraapp",
     "version": "1.0.2",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/icon3.png",
     "userInterfaceStyle": "automatic",
     "ios": {
       "supportsTablet": true
@@ -13,14 +13,14 @@
     "android": {
       "package": "com.dentra.dentraapp",
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/icon.png",
+        "foregroundImage": "./assets/images/icon3.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
       "bundler": "metro",
       "output": "static",
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/icon3.png"
     },
     "extra": {
       "eas": {
